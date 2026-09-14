@@ -21,4 +21,10 @@ public class UserService {
     public User addUser(User user) {
         return userRepository.save(user);
     }
+
+    // this is for the user to fetch from the user "id"
+    public User finduserbyid(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("user not found!!"));
+    }
 }
