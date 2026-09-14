@@ -27,4 +27,16 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("user not found!!"));
     }
+
+    // this will get the data for the user and find by user id and update the data of that user
+    public boolean updateuser(Long id, User Updateduser) {
+        return userRepository.findById(id).map(existingUser -> {
+            existingUser.setUsername(Updateduser.getUsername());
+            existingUser.setPassword(Updateduser.getPassword());
+            existingUser.setEmail(Updateduser.getEmail());
+            userRepository.save(existingUser);
+            return true;
+        }).orElse(false);
+
+    }
 }
