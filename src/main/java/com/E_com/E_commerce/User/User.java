@@ -5,6 +5,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "User_Data_for_E-Comm")
@@ -17,14 +21,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     // it will generate the unique id foe each customer
     private Long id;
+
     // uername for the customer
     @NotNull(message = "Please Enter the user name!!")
     private String username;
 
     @NotNull(message = "Please Enter the password!!")
     private String password;
+
     @NotNull(message = "Please Enter the email!!")
     private String email;
+
     // it is the also a type of identifier for three class = "CUSTOMER", "MERCHANT", "ADMIN"
     private UserRole role = UserRole.Customer;
 
@@ -33,4 +40,9 @@ public class User {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }
