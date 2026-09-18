@@ -1,11 +1,13 @@
 package com.E_com.E_commerce.User;
 
+import com.E_com.E_commerce.User.dto.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -14,7 +16,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("api/user")
-    public List<User> getallUser(){
+    public List<UserResponse> getallUser(){
         return userService.getalluser();
     }
 
@@ -25,9 +27,8 @@ public class UserController {
     }
 
     @GetMapping("/api/user/{id}")
-    public ResponseEntity<User> getUser(@PathVariable("id") Long id){
-        userService.finduserbyid(id);
-        return ResponseEntity.ok(userService.finduserbyid(id));
+    public Optional<UserResponse> getUser(@PathVariable("id") Long id){
+        return userService.finduserbyid(id);
     }
 
     @PutMapping("api/user/{id}")
