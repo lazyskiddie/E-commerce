@@ -29,7 +29,7 @@ public class products {
     private String price;
     private String blockQuantity;
     private String imageurl;
-    private Boolean active;
+    private Boolean active = true;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
