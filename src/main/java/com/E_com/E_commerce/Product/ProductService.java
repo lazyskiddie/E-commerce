@@ -11,7 +11,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductResponse createProduct(ProductRequest productRequest) {
+    public ProductResponse createproduct(ProductRequest productRequest) {
         Product  product = new Product();
         UpdateProductFromrequest(product, productRequest);
         Product saveProduct = productRepository.save(product);
