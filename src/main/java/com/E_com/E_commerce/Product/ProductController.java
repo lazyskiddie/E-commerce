@@ -17,7 +17,7 @@ public class ProductController {
 
     @PutMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
-        return new ResponseEntity<ProductResponse>(productService.createproduct(productRequest),
+        return new ResponseEntity<ProductResponse>(productService.createProduct(productRequest),
                 HttpStatus.CREATED);
 
     }

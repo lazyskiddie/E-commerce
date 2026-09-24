@@ -11,22 +11,22 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public ProductResponse createproduct(ProductRequest productRequest) {
+    public ProductResponse createProduct(ProductRequest productRequest) {
         Product  product = new Product();
-        UpdateProductFromrequest(product, productRequest);
+        UpdateProductFromRequest(product, productRequest);
         Product saveProduct = productRepository.save(product);
         return mapToProductResponse(saveProduct);
     }
 
-    public ProductResponse updateproduct(Long id,ProductRequest productRequest) {
+    public ProductResponse updateProduct(Long id,ProductRequest productRequest) {
         return productRepository.findById(id).map(existingUser -> {
-            UpdateProductFromrequest(existingUser, productRequest);
+            UpdateProductFromRequest(existingUser, productRequest);
             Product savedProduct = productRepository.save(existingUser);
             return mapToProductResponse(savedProduct);
         }).orElseThrow(() -> new RuntimeException("Product doesn't found!!"));
     }
 
-    private void UpdateProductFromrequest(Product product, ProductRequest productRequest) {
+    private void UpdateProductFromRequest(Product product, ProductRequest productRequest) {
         product.setName(productRequest.getName());
         product.setImageurl(productRequest.getImageurl());
         product.setCategory(productRequest.getCategory());
