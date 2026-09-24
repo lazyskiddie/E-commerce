@@ -18,6 +18,15 @@ public class ProductService {
         return mapToProductResponse(saveProduct);
     }
 
+    private void UpdateProductFromrequest(Product product, ProductRequest productRequest) {
+        product.setName(productRequest.getName());
+        product.setImageurl(productRequest.getImageurl());
+        product.setCategory(productRequest.getCategory());
+        product.setPrice(productRequest.getPrice());
+        product.setDescription(productRequest.getDescription());
+        product.setBlockQuantity(productRequest.getBlockQuantity());
+    }
+
     private ProductResponse mapToProductResponse(Product saveProduct) {
         ProductResponse response = new ProductResponse();
         response.setId(saveProduct.getId());
