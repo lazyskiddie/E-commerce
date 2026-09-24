@@ -18,6 +18,14 @@ public class ProductService {
         return mapToProductResponse(saveProduct);
     }
 
+    public ProductResponse updateproduct(Long id,ProductRequest productRequest) {
+        return productRepository.findById(id).map(existingUser -> {
+            UpdateProductFromrequest(existingUser, productRequest);
+            Product savedProduct = productRepository.save(existingUser);
+            return mapToProductResponse(savedProduct);
+        }).orElseThrow(() -> new RuntimeException("Product doesn't found!!"));
+    }
+
     private void UpdateProductFromrequest(Product product, ProductRequest productRequest) {
         product.setName(productRequest.getName());
         product.setImageurl(productRequest.getImageurl());
