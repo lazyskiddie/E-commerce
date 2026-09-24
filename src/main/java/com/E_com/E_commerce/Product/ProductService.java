@@ -18,4 +18,17 @@ public class ProductService {
         return mapToProductResponse(saveProduct);
     }
 
+    private ProductResponse mapToProductResponse(Product saveProduct) {
+        ProductResponse response = new ProductResponse();
+        response.setId(saveProduct.getId());
+        response.setName(saveProduct.getName());
+        response.setPrice(saveProduct.getPrice());
+        response.setDescription(saveProduct.getDescription());
+        response.setCategory(saveProduct.getCategory());
+        response.setBlockQuantity(saveProduct.getBlockQuantity());
+        response.setImageurl(saveProduct.getImageurl());
+        response.setActive(saveProduct.getActive());
+        return response;
+    }
+
 }
