@@ -3,7 +3,12 @@ package com.E_com.E_commerce.Product;
 import com.E_com.E_commerce.Product.dto.ProductRequest;
 import com.E_com.E_commerce.Product.dto.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -12,21 +17,30 @@ public class ProductService {
     private ProductRepository productRepository;
 
     public ProductResponse createProduct(ProductRequest productRequest) {
-        Product  product = new Product();
-        UpdateProductFromRequest(product, productRequest);
-        Product saveProduct = productRepository.save(product);
-        return mapToProductResponse(saveProduct);
+        Product product = new Product();
+        updateProductFromRequest(product, productRequest);
+        Product savedProduct = productRepository.save(product);
+        return mapToProductResponse(savedProduct);
     }
 
-    public ProductResponse updateProduct(Long id,ProductRequest productRequest) {
-        return productRepository.findById(id).map(existingUser -> {
-            UpdateProductFromRequest(existingUser, productRequest);
-            Product savedProduct = productRepository.save(existingUser);
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
+        return productRepository.findById(id).map(existingProduct -> {
+            updateProductFromRequest(existingProduct, productRequest);
+            Product savedProduct = productRepository.save(existingProduct);
             return mapToProductResponse(savedProduct);
-        }).orElseThrow(() -> new RuntimeException("Product doesn't found!!"));
+        }).orElseThrow(() -> new RuntimeException("Product not found!!"));
     }
 
-    private void UpdateProductFromRequest(Product product, ProductRequest productRequest) {
+    public List<ProductResponse> getAllProducts(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable)
+                .getContent()
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    private void updateProductFromRequest(Product product, ProductRequest productRequest) {
         product.setName(productRequest.getName());
         product.setImageurl(productRequest.getImageurl());
         product.setCategory(productRequest.getCategory());
@@ -47,5 +61,4 @@ public class ProductService {
         response.setActive(saveProduct.getActive());
         return response;
     }
-
 }
