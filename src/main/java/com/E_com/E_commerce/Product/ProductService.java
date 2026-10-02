@@ -2,6 +2,7 @@ package com.E_com.E_commerce.Product;
 
 import com.E_com.E_commerce.Product.dto.ProductRequest;
 import com.E_com.E_commerce.Product.dto.ProductResponse;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -47,6 +48,13 @@ public class ProductService {
                     productRepository.save(product);
                     return true;
                     }).orElseThrow(() -> new RuntimeException("product not found"));
+    }
+
+    public @Nullable List<ProductResponse> searchProducts(String keyword) {
+        return productRepository.searchProducts(keyword)
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
     }
 
     private void updateProductFromRequest(Product product, ProductRequest productRequest) {
