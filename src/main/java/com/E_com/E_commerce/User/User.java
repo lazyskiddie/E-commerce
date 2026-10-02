@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
+import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
