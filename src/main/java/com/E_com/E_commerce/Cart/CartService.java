@@ -7,6 +7,7 @@ import com.E_com.E_commerce.User.User;
 import com.E_com.E_commerce.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -50,6 +51,20 @@ public class CartService {
             newCartItem.setPrice(new BigDecimal(product.getPrice()).multiply(BigDecimal.valueOf(request.getQuantity())));
             cartRepository.save(newCartItem);
         }
+        return true;
+    }
+
+    @Transactional
+    public boolean deleteItemsFromCart(String userId, Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if(productOptional.isEmpty())
+            return false;
+
+        Optional<User> userOptional = userRepository.findById(Long.valueOf(userId));
+        if(userOptional.isEmpty())
+            return false;
+
+        cartRepository.deleteByUserAndProduct(userOptional.get(), productOptional.get());
         return true;
     }
 }
