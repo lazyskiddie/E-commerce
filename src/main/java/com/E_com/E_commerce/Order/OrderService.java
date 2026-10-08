@@ -57,5 +57,24 @@ public class OrderService {
                 .toList();
         order.setItem(orderItems);
         Order savedOrder = orderRepository.save(order);
+
+        OrderResponse response = new OrderResponse();
+        response.setId(savedOrder.getId());
+        response.setTotalAmount(savedOrder.getTotalAmount());
+        response.setStatus(savedOrder.getStatus());
+        response.setCreatedAt(savedOrder.getCreatedAt());
+
+        List<OrderItemDTO> itemDTOs = savedOrder.getItem().stream().map(oi -> {
+            OrderItemDTO dto = new OrderItemDTO();
+            dto.setId(oi.getId());
+            dto.setProductId(oi.getProduct().getId());
+            dto.setQuantity(oi.getQuantity());
+            dto.setPrice(oi.getPrice());
+            return dto;
+        }).toList();
+
+        response.setItems(itemDTOs);
+
+        return Optional.of(response);
     }
 }
