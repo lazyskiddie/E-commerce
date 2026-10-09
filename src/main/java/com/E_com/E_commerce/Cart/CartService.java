@@ -1,5 +1,6 @@
 package com.E_com.E_commerce.Cart;
 
+import com.E_com.E_commerce.Cart.dto.CartItemRequest;
 import com.E_com.E_commerce.Product.Product;
 import com.E_com.E_commerce.Product.ProductRepository;
 import com.E_com.E_commerce.User.User;
@@ -28,7 +29,7 @@ public class CartService {
             return false;
 
         Product product = productOptional.get();
-        if(product.getBlockQuantity() < request.getQuantity())
+        if(Integer.parseInt(product.getBlockQuantity()) < request.getQuantity())
             return false;
 
         Optional<User> userOptional = userRepository.findById(Long.valueOf(userId));
@@ -39,14 +40,14 @@ public class CartService {
         Cart exestingCartItem = cartRepository.findByUserAndProduct(user, product);
         if(exestingCartItem != null){
             exestingCartItem.setQuantity(exestingCartItem.getQuantity() + request.getQuantity());
-            exestingCartItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(exestingCartItem.getQuantity())));
+            exestingCartItem.setPrice(new BigDecimal(product.getPrice()).multiply(BigDecimal.valueOf(exestingCartItem.getQuantity())));
             cartRepository.save(exestingCartItem);
         } else {
             Cart newCartItem = new Cart();
             newCartItem.setUser(user);
             newCartItem.setProduct(product);
-            newCartItem.getQuantity(request.getQuantity());
-            newCartItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(request.getQuantity())));
+            newCartItem.setQuantity(request.getQuantity());
+            newCartItem.setPrice(new BigDecimal(product.getPrice()).multiply(BigDecimal.valueOf(request.getQuantity())));
             cartRepository.save(newCartItem);
         }
         return true;
