@@ -5,10 +5,13 @@ import com.E_com.E_commerce.Product.Product;
 import com.E_com.E_commerce.Product.ProductRepository;
 import com.E_com.E_commerce.User.User;
 import com.E_com.E_commerce.User.UserRepository;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,5 +54,25 @@ public class CartService {
             cartRepository.save(newCartItem);
         }
         return true;
+    }
+
+    @Transactional
+    public boolean deleteItemsFromCart(String userId, Long productId) {
+        Optional<Product> productOptional = productRepository.findById(productId);
+        if(productOptional.isEmpty())
+            return false;
+
+        Optional<User> userOptional = userRepository.findById(Long.valueOf(userId));
+        if(userOptional.isEmpty())
+            return false;
+
+        cartRepository.deleteByUserAndProduct(userOptional.get(), productOptional.get());
+        return true;
+    }
+
+    public List<Cart> getCart(String userId) {
+        return userRepository.findById(Long.valueOf(userId))
+                .map(cartRepository::findByUser)
+                .orElseGet(List::of);
     }
 }
