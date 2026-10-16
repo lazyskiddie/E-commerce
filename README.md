@@ -1,11 +1,6 @@
 # E-commerce
 
 
-<div align="center">
-  <h1> Architecture Overview </h1>
-  <img src="src/main/resources/static/E-com_arch.png" width="800" height="800" title="Architecture Overview">
-</div>
-
 ## About This Project
 
 This repository is the backend for an e-commerce platform built with Java and Spring Boot. It follows a modular, microservice-inspired architecture and is intended to support commerce workflows such as product management, user accounts, cart operations, and order processing.
@@ -25,6 +20,11 @@ Each module is separated logically, which helps keep the codebase easier to main
 
 ## Architecture
 
+<div align="center">
+  <h1> Architecture Overview </h1>
+  <img src="src/main/resources/static/E-com_arch.png" width="800" height="800" title="Architecture Overview">
+</div>
+
 The repository structure reflects a service-oriented and modular backend design. Instead of a single monolithic implementation, the application is organized around business domains, allowing teams to scale and evolve specific areas independently as the project expands.
 
 The architecture includes:
@@ -42,7 +42,6 @@ The architecture includes:
 - Maven
 - Spring Data JPA
 - MySQL Connector
-- Thymeleaf
 - Validation and Actuator support
 
 ## Main Modules
@@ -59,32 +58,6 @@ The Cart module manages the user shopping cart and supports cart creation, updat
 ### Order Module
 The Order module manages purchase flows, order status, order items, and the lifecycle of transactions after checkout.
 
-## Repository Structure
-
-```text
-E-commerce/
-├── .mvn/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/E_com/E_commerce/
-│   │   │       ├── Cart/
-│   │   │       ├── Order/
-│   │   │       ├── Product/
-│   │   │       ├── User/
-│   │   │       └── ECommerceApplication.java
-│   │   └── resources/
-│   │       ├── application.properties
-│   │       └── static/
-│   └── test/
-├── .gitattributes
-├── .gitignore
-├── pom.xml
-├── mvnw
-├── mvnw.cmd
-├── README.md
-└── E-com_arch.png
-```
 
 ## Getting Started
 
