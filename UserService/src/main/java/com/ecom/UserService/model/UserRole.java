@@ -1,4 +1,4 @@
-package com.E_com.E_commerce.User;
+package com.ecom.UserService.model;
 
 public enum UserRole {
     Customer, Merchant, ADMIN

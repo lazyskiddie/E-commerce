@@ -1,7 +1,6 @@
-package com.E_com.E_commerce.User.dto;
+package com.ecom.UserService.dto;
 
-import com.E_com.E_commerce.User.Address;
-import com.E_com.E_commerce.User.UserRole;
+import com.ecom.UserService.model.UserRole;
 import lombok.Data;
 
 @Data

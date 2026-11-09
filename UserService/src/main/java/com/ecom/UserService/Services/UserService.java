@@ -1,10 +1,13 @@
-package com.E_com.E_commerce.User;
+package com.ecom.UserService.Services;
 
-import com.E_com.E_commerce.User.dto.Addressdto;
-import com.E_com.E_commerce.User.dto.UserRequest;
-import com.E_com.E_commerce.User.dto.UserResponse;
+import com.ecom.UserService.Repository.UserRepository;
+import com.ecom.UserService.dto.Addressdto;
+import com.ecom.UserService.dto.UserRequest;
+import com.ecom.UserService.dto.UserResponse;
+import com.ecom.UserService.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.ecom.UserService.model.User;
 
 import java.util.List;
 import java.util.Optional;
