@@ -1,4 +1,4 @@
-package com.E_com.E_commerce.Cart;
+package com.ecom.CartService.Models;
 
 import com.E_com.E_commerce.Product.Product;
 import com.E_com.E_commerce.User.User;
