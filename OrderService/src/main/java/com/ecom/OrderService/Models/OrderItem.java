@@ -1,6 +1,5 @@
-package com.E_com.E_commerce.Order;
+package com.ecom.OrderService.Models;
 
-import com.E_com.E_commerce.Product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,14 +1,9 @@
-package com.E_com.E_commerce.Order;
+package com.ecom.OrderService.Services;
 
-import com.E_com.E_commerce.Cart.Cart;
-import com.E_com.E_commerce.Cart.CartService;
-import com.E_com.E_commerce.Order.dto.OrderResponse;
-import com.E_com.E_commerce.User.User;
-import com.E_com.E_commerce.User.UserRepository;
+import com.ecom.OrderService.Repositories.OrderRepository;
+import com.ecom.OrderService.dto.OrderResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.E_com.E_commerce.Order.dto.OrderItemDTO;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
