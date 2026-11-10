@@ -1,6 +1,9 @@
 package com.ecom.CartService.Services;
 
+import com.ecom.CartService.Models.Cart;
 import com.ecom.CartService.Repositories.CartRepository;
+import com.ecom.CartService.dto.CartItemRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,64 +13,44 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    public boolean addToCart(String userId, CartItemRequest request) {
+        Cart existingCartItem = cartRepository.findByUserIdAndProductId(userId, request.getProductId());
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public Boolean addToCart(String userId, CartItemRequest request) {
-        Optional<Product> productOptional = productRepository.findById(request.getProductId());
-        if(productOptional.isEmpty())
-            return false;
-
-        Product product = productOptional.get();
-        if(Integer.parseInt(product.getBlockQuantity()) < request.getQuantity())
-            return false;
-
-        Optional<User> userOptional = userRepository.findById(Long.valueOf(userId));
-        if(userOptional.isEmpty())
-            return false;
-        User user = userOptional.get();
-
-        Cart exestingCartItem = cartRepository.findByUserAndProduct(user, product);
-        if(exestingCartItem != null){
-            exestingCartItem.setQuantity(exestingCartItem.getQuantity() + request.getQuantity());
-            exestingCartItem.setPrice(new BigDecimal(product.getPrice()).multiply(BigDecimal.valueOf(exestingCartItem.getQuantity())));
-            cartRepository.save(exestingCartItem);
+        if (existingCartItem != null) {
+            existingCartItem.setQuantity(existingCartItem.getQuantity() + request.getQuantity());
+            existingCartItem.setPrice(BigDecimal.valueOf(1000.00));
+            cartRepository.save(existingCartItem);
         } else {
-            Cart newCartItem = new Cart();
-            newCartItem.setUser(user);
-            newCartItem.setProduct(product);
-            newCartItem.setQuantity(request.getQuantity());
-            newCartItem.setPrice(new BigDecimal(product.getPrice()).multiply(BigDecimal.valueOf(request.getQuantity())));
-            cartRepository.save(newCartItem);
+            Cart cartItem = new Cart();
+            cartItem.setUserId(userId);
+            cartItem.setProductId(request.getProductId());
+            cartItem.setQuantity(request.getQuantity());
+            cartItem.setPrice(BigDecimal.valueOf(1000.00));
+            cartRepository.save(cartItem);
         }
         return true;
     }
 
-    @Transactional
-    public boolean deleteItemsFromCart(String userId, Long productId) {
-        Optional<Product> productOptional = productRepository.findById(productId);
-        if(productOptional.isEmpty())
-            return false;
-
-        Optional<User> userOptional = userRepository.findById(Long.valueOf(userId));
-        if(userOptional.isEmpty())
-            return false;
-
-        cartRepository.deleteByUserAndProduct(userOptional.get(), productOptional.get());
-        return true;
+    public boolean deleteItemFromCart(String userId, String productId) {
+        Cart cartItem = cartRepository.findByUserIdAndProductId(userId, productId);
+        if (cartItem != null) {
+            cartRepository.delete(cartItem);
+            return true;
+        }
+        return false;
     }
 
     public List<Cart> getCart(String userId) {
-        return userRepository.findById(Long.valueOf(userId))
-                .map(cartRepository::findByUser)
-                .orElseGet(List::of);
+        return cartRepository.findByUserId(userId);
+    }
+
+    public void clearCart(String userId) {
+        cartRepository.deleteByUserId(userId);
     }
 }
