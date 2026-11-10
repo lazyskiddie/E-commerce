@@ -26,8 +26,8 @@ public class CartController {
     }
 
     @DeleteMapping("/item/{productId}")
-    public ResponseEntity<Void> removeFromCart(@RequestHeader("X-User-ID") String userId, @PathVariable Long productId){
-        boolean deleted = cartService.deleteItemsFromCart(userId, productId);
+    public ResponseEntity<Void> removeFromCart(@RequestHeader("X-User-ID") String userId, @PathVariable String productId) {
+        boolean deleted = cartService.deleteItemFromCart(userId, productId);
         return deleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
