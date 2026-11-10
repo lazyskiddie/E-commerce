@@ -1,7 +1,5 @@
 package com.ecom.CartService.Models;
 
-import com.E_com.E_commerce.Product.Product;
-import com.E_com.E_commerce.User.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,16 +20,11 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private String userId;
+    private String productId;
 
     private Integer quantity;
-    private BigDecimal Price;
+    private BigDecimal price;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
