@@ -1,0 +1,89 @@
+package com.ecom.ProductService.Services;
+
+import com.ecom.ProductService.Models.Product;
+import com.ecom.ProductService.Repositories.ProductRepository;
+import com.ecom.ProductService.dto.ProductRequest;
+import com.ecom.ProductService.dto.ProductResponse;
+import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    public ProductResponse createProduct(ProductRequest productRequest) {
+        Product product = new Product();
+        updateProductFromRequest(product, productRequest);
+        Product savedProduct = productRepository.save(product);
+        return mapToProductResponse(savedProduct);
+    }
+
+    @CachePut(value = "products", key = "#id")
+    public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
+        return productRepository.findById(id).map(existingProduct -> {
+            updateProductFromRequest(existingProduct, productRequest);
+            Product savedProduct = productRepository.save(existingProduct);
+            return mapToProductResponse(savedProduct);
+        }).orElseThrow(() -> new RuntimeException("Product not found!!"));
+    }
+
+    @Cacheable(value = "products", key = "#id")
+    public List<ProductResponse> getAllProducts(Integer page, Integer size){
+        Pageable pageable = PageRequest.of(page, size);
+        return productRepository.findAll(pageable)
+                .getContent()
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    @CacheEvict(value = "products", key = "#id")
+    public boolean deleteProduct(Long id) {
+        return productRepository.findById(id)
+                .map(product ->{
+                    product.setActive(false);
+                    productRepository.save(product);
+                    return true;
+                    }).orElseThrow(() -> new RuntimeException("product not found"));
+    }
+
+    public @Nullable List<ProductResponse> searchProducts(String keyword) {
+        return productRepository.searchProducts(keyword)
+                .stream()
+                .map(this::mapToProductResponse)
+                .collect(Collectors.toList());
+    }
+
+    private void updateProductFromRequest(Product product, ProductRequest productRequest) {
+        product.setName(productRequest.getName());
+        product.setImageurl(productRequest.getImageurl());
+        product.setCategory(productRequest.getCategory());
+        product.setPrice(productRequest.getPrice());
+        product.setDescription(productRequest.getDescription());
+        product.setBlockQuantity(productRequest.getBlockQuantity());
+    }
+
+    private ProductResponse mapToProductResponse(Product saveProduct) {
+        ProductResponse response = new ProductResponse();
+        response.setId(saveProduct.getId());
+        response.setName(saveProduct.getName());
+        response.setPrice(saveProduct.getPrice());
+        response.setDescription(saveProduct.getDescription());
+        response.setCategory(saveProduct.getCategory());
+        response.setBlockQuantity(saveProduct.getBlockQuantity());
+        response.setImageurl(saveProduct.getImageurl());
+        response.setActive(saveProduct.getActive());
+        return response;
+    }
+}
