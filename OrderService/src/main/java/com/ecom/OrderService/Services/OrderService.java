@@ -16,8 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -49,9 +51,10 @@ public class OrderService {
         order.setUserId(userId);
         order.setStatus(OrderStatus.PENDING); // CONFIRMED only after stock is really reserved
         order.setTotalAmount(totalPrice);
+        // must be a mutable list: the collection is managed by Hibernate (orphanRemoval = true)
         order.setItems(cart.stream()
                 .map(item -> new OrderItem(null, item.getProductId(), item.getQuantity(), item.getPrice(), order))
-                .toList());
+                .collect(Collectors.toCollection(ArrayList::new)));
 
         Order saved = transactionTemplate.execute(tx -> orderRepository.save(order));
 
