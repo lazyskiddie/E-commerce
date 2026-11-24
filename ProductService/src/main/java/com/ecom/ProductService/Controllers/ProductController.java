@@ -1,10 +1,10 @@
-package com.E_com.E_commerce.Product;
+package com.ecom.ProductService.Controllers;
 
-import com.E_com.E_commerce.Product.dto.ProductRequest;
-import com.E_com.E_commerce.Product.dto.ProductResponse;
+import com.ecom.ProductService.Services.ProductService;
+import com.ecom.ProductService.dto.ProductRequest;
+import com.ecom.ProductService.dto.ProductResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

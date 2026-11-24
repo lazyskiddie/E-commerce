@@ -1,7 +1,8 @@
-package com.E_com.E_commerce.User;
+package com.ecom.UserService.Controllers;
 
-import com.E_com.E_commerce.User.dto.UserRequest;
-import com.E_com.E_commerce.User.dto.UserResponse;
+import com.ecom.UserService.dto.UserRequest;
+import com.ecom.UserService.dto.UserResponse;
+import com.ecom.UserService.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

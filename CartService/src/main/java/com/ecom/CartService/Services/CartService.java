@@ -1,11 +1,6 @@
-package com.E_com.E_commerce.Cart;
+package com.ecom.CartService.Services;
 
-import com.E_com.E_commerce.Cart.dto.CartItemRequest;
-import com.E_com.E_commerce.Product.Product;
-import com.E_com.E_commerce.Product.ProductRepository;
-import com.E_com.E_commerce.User.User;
-import com.E_com.E_commerce.User.UserRepository;
-import org.jspecify.annotations.Nullable;
+import com.ecom.CartService.Repositories.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
