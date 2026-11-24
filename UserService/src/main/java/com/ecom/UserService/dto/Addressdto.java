@@ -1,4 +1,4 @@
-package com.E_com.E_commerce.User.dto;
+package com.ecom.UserService.dto;
 
 import lombok.Data;
 

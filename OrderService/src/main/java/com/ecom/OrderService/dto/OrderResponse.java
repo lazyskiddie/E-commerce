@@ -1,7 +1,6 @@
-package com.E_com.E_commerce.Order.dto;
+package com.ecom.OrderService.dto;
 
-import com.E_com.E_commerce.Order.OrderItem;
-import com.E_com.E_commerce.Order.OrderStatus;
+import com.ecom.OrderService.Models.OrderStatus;
 import lombok.Data;
 
 import java.math.BigDecimal;

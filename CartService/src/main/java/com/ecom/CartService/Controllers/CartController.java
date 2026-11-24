@@ -1,6 +1,8 @@
-package com.E_com.E_commerce.Cart;
+package com.ecom.CartService.Controllers;
 
-import com.E_com.E_commerce.Cart.dto.CartItemRequest;
+import com.ecom.CartService.Models.Cart;
+import com.ecom.CartService.dto.CartItemRequest;
+import com.ecom.CartService.Services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,8 @@ public class CartController {
     }
 
     @DeleteMapping("/item/{productId}")
-    public ResponseEntity<Void> removeFromCart(@RequestHeader("X-User-ID") String userId, @PathVariable Long productId){
-        boolean deleted = cartService.deleteItemsFromCart(userId, productId);
+    public ResponseEntity<Void> removeFromCart(@RequestHeader("X-User-ID") String userId, @PathVariable String productId) {
+        boolean deleted = cartService.deleteItemFromCart(userId, productId);
         return deleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 

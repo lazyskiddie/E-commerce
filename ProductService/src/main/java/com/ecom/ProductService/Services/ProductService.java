@@ -1,9 +1,14 @@
-package com.E_com.E_commerce.Product;
+package com.ecom.ProductService.Services;
 
-import com.E_com.E_commerce.Product.dto.ProductRequest;
-import com.E_com.E_commerce.Product.dto.ProductResponse;
+import com.ecom.ProductService.Models.Product;
+import com.ecom.ProductService.Repositories.ProductRepository;
+import com.ecom.ProductService.dto.ProductRequest;
+import com.ecom.ProductService.dto.ProductResponse;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +29,7 @@ public class ProductService {
         return mapToProductResponse(savedProduct);
     }
 
+    @CachePut(value = "products", key = "#id")
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
         return productRepository.findById(id).map(existingProduct -> {
             updateProductFromRequest(existingProduct, productRequest);
@@ -32,6 +38,7 @@ public class ProductService {
         }).orElseThrow(() -> new RuntimeException("Product not found!!"));
     }
 
+    @Cacheable(value = "products", key = "#id")
     public List<ProductResponse> getAllProducts(Integer page, Integer size){
         Pageable pageable = PageRequest.of(page, size);
         return productRepository.findAll(pageable)
@@ -41,6 +48,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    @CacheEvict(value = "products", key = "#id")
     public boolean deleteProduct(Long id) {
         return productRepository.findById(id)
                 .map(product ->{

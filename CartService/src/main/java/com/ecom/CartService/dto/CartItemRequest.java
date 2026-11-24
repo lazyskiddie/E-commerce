@@ -1,9 +1,9 @@
-package com.E_com.E_commerce.Cart.dto;
+package com.ecom.CartService.dto;
 
 import lombok.Data;
 
 @Data
 public class CartItemRequest {
-    private Long productId;
+    private String productId;
     private Integer quantity;
 }

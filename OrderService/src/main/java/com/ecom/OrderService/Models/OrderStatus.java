@@ -1,4 +1,4 @@
-package com.E_com.E_commerce.Order;
+package com.ecom.OrderService.Models;
 
 public enum OrderStatus {
     PENDING,DELIVERED,SHIPPED,CONFIRMED,CANCELLED
